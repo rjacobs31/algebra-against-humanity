@@ -7,3 +7,4 @@ publish = false
 
 [dependencies]
 actix-web = "0.7"
+rand = "0.6"
