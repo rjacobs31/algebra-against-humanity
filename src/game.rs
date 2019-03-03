@@ -72,6 +72,20 @@ impl<T> Deck<T>
 where
     T: Clone,
 {
+    fn init<I>(&mut self, iter: I)
+    where
+        I: IntoIterator<Item = T>,
+    {
+        use rand::seq::SliceRandom;
+        use rand::thread_rng;
+
+        self.deck.clear();
+        self.discard_pile.clear();
+
+        self.deck.extend(iter);
+        self.deck.shuffle(&mut thread_rng());
+    }
+
     fn draw_only(&mut self) -> Option<T> {
         self.deck.pop()
     }
@@ -108,6 +122,15 @@ struct Game {
 }
 
 impl Game {
+    fn start<IQ, IA>(&mut self, questions: IQ, answers: IA)
+    where
+        IQ: IntoIterator<Item = QuestionCard>,
+        IA: IntoIterator<Item = AnswerCard>,
+    {
+        self.questions.init(questions);
+        self.answers.init(answers);
+    }
+
     fn player_discard(&mut self, player_id: usize, card_id: usize) {
         for i in 0..self.hands.len() {
             if self.hands[i].player_id == player_id {
