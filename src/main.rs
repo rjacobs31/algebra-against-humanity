@@ -1,5 +1,10 @@
+#![warn(clippy::all)]
+
 extern crate actix_web;
 use actix_web::{server, App, HttpRequest};
+
+mod cards;
+mod game;
 
 fn index(_req: &HttpRequest) -> &'static str {
     "Hello, world!"
