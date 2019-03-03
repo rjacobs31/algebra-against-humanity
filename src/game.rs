@@ -128,4 +128,20 @@ impl Game {
             }
         }
     }
+
+    fn discard_in_play(&mut self) {
+        for hand in &mut self.hands {
+            for card in hand.remove_in_play() {
+                self.answers.discard(card);
+            }
+        }
+    }
+
+    fn next_question(&mut self) {
+        use std::mem::replace;
+
+        let new_question = self.questions.draw().unwrap();
+        let discarded = replace(&mut self.current_question, new_question);
+        self.questions.discard(discarded);
+    }
 }
